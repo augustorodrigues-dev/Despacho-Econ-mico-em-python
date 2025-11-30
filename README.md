@@ -98,25 +98,25 @@ O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo 
 ## 📊 Validação e Resultados
 O sistema foi validado utilizando dados reais do artigo de referência:Dey, B., et al. (2021). "A hybrid optimization-based approach to solve environment constrained economic dispatch problem on microgrid system". Journal of Cleaner Production.Comparativo de Performance (Custo Diário - 24h)MétodoAbordagemCusto Total (USD)DiferençaArtigo (Dey et al.)Metaheurística (GWO)$ 176.165,00Ref.Smart DispatchAnalítico (Cálculo)**$ 170.460,88**-3,23%✅ Conclusão: O método analítico exato provou ser 3,23% mais econômico que a abordagem heurística do estado da arte, garantindo o Mínimo Global matemático.
 
-## Estrutura de Arquivos/
-├── backend/                                   # O Serviço Único de Deploy (Root Directory)
-│   ├── app.py # Servidor Flask e rotas API/HTML
-│   ├── optimization.py # Lógica Matemática (SymPy)
-│   ├── database.py # Conexão e Lógica SQLite
-│   ├── requirements.txt # Dependências (Flask, SymPy, Gunicorn)
-│   │
-│   ├── templates/
-│   │   └── index.html # O Dashboard Principal (HTML)
-│   │
-│   └── static/
-│       ├── script.js # Lógica do Frontend e Chart.js
-│       └── style.css # Estilização do Dashboard
+## 📂 Estrutura de Arquivos/
 │
-├── data/                                      # Persistência de Dados
-│   └── historico.db # Banco de Dados
+├── backend/
+│   ├── app.py              
+│   ├── optimization.py     
+│   ├── database.py         
+│   └── requirements.txt  
+|   └── templates  
 │
-├── validacao_artigo.ipynb # Prova Matemática e Gráficos de Validação
-└── README.md # Documentação e Instruções
+├── frontend/
+│   ├── index.html          
+│   ├── script.js           
+│   └── style.css           
+│
+├── data/
+│   └── historico.db        
+│
+├── validacao_artigo.ipynb  
+└── README.md    
 
 ## 👥 Autores
 
