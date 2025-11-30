@@ -99,8 +99,11 @@ O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo 
 │   └── historico.db        
 │
 ├── validacao_artigo.ipynb  
-└── README.md               
-👥 AutoresProjeto desenvolvido para a disciplina de Resolução Diferencial de Problemas.
+└── README.md    
+```           
+👥 Autores
+
+Projeto desenvolvido para a disciplina de Resolução Diferencial de Problemas.
 Augusto Rodrigue
 Cauê Barroso
 César Ribeiro

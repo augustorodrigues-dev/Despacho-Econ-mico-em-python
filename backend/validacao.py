@@ -1,14 +1,13 @@
 import matplotlib.pyplot as plt
 from optimization import calcular_despacho
 
-# --- DADOS REAIS DO ARTIGO ---
-# Fonte: Tabela 3 do PDF "1-s2.0-S0959652621014153-main.pdf" [cite: 1407]
+
 demanda_24h = [
     140, 150, 155, 160, 165, 170, 175, 180, 210, 230, 240, 250,
     240, 220, 200, 180, 170, 185, 200, 240, 225, 190, 160, 145
 ]
 
-# Benchmark do Artigo (Tabela 4 - Coluna ELD Without RES) [cite: 1413]
+
 custo_artigo = 176165.00 
 
 def validar_modelo():
@@ -22,7 +21,7 @@ def validar_modelo():
     print("-" * 60)
 
     for hora, demanda in enumerate(demanda_24h, 1):
-        # Chama nosso algoritmo de Lagrange
+        
         resultado = calcular_despacho(demanda)
         
         if 'erro' in resultado:
@@ -32,7 +31,7 @@ def validar_modelo():
         custo_hora = resultado['custo_total']
         custo_acumulado_nosso += custo_hora
         
-        # Extrai potências para exibição
+        
         p1 = resultado['geradores']['G1']['potencia']
         p2 = resultado['geradores']['G2']['potencia']
         p3 = resultado['geradores']['G3']['potencia']
