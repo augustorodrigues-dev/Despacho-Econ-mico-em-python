@@ -99,27 +99,29 @@ O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo 
 O sistema foi validado utilizando dados reais do artigo de referência:Dey, B., et al. (2021). "A hybrid optimization-based approach to solve environment constrained economic dispatch problem on microgrid system". Journal of Cleaner Production.Comparativo de Performance (Custo Diário - 24h)MétodoAbordagemCusto Total (USD)DiferençaArtigo (Dey et al.)Metaheurística (GWO)$ 176.165,00Ref.Smart DispatchAnalítico (Cálculo)**$ 170.460,88**-3,23%✅ Conclusão: O método analítico exato provou ser 3,23% mais econômico que a abordagem heurística do estado da arte, garantindo o Mínimo Global matemático.
 
 ## 📂 Estrutura de Arquivos/
-│
+
 ├── backend/
-│   ├── app.py              
-│   ├── optimization.py     
-│   ├── database.py         
-│   └── requirements.txt  
-│   └── templates/
-│       |└── index.html
+│   ├── app.py
+│   ├── optimization.py
+│   ├── database.py
+│   ├── requirements.txt
+│   ├── templates/
+│   │   └── index.html
 │   └── static/
-│       |└── style.css
-│       |└── script.js
+│       ├── style.css
+│       └── script.js
+│
 ├── frontend/
-│   ├── index.html          
-│   ├── script.js           
-│   └── style.css           
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
 │
 ├── data/
-│   └── historico.db        
+│   └── historico.db
 │
-├── validacao_artigo.ipynb  
-└── README.md    
+├── validacao_artigo.ipynb
+└── README.md
+   
 
 ## 👥 Autores
 
