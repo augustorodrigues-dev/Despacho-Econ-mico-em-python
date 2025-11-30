@@ -77,16 +77,27 @@ Siga os passos abaixo para executar o sistema na sua máquina local.
 ```bash
 git clone [https://github.com/augustorodrigues-dev/Despacho-Econ-mico-em-python](https://github.com/augustorodrigues-dev/Despacho-Econ-mico-em-python)
 cd despacho-economico-em-python
+```
 2. Criar Ambiente Virtual (Recomendado)Bash# Windows
+```bash
 python -m venv venv
 venv\Scripts\activate
 
 python3 -m venv venv
 source venv/bin/activate
-3. Instalar DependênciasBashpip install -r backend/requirements.txt
+```
+3. Instalar Dependências
+```Bash
+pip install -r backend/requirements.txt
 4. Executar o BackendO banco de dados historico.db será criado automaticamente na primeira execução.Bashcd backend
 python app.py
-O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo frontend/index.html no seu navegador.(Dica: Se usar VS Code, utilize a extensão "Live Server" para evitar problemas de CORS, embora a API já esteja configurada para aceitá-los).📊 Validação e ResultadosO sistema foi validado utilizando dados reais do artigo de referência:Dey, B., et al. (2021). "A hybrid optimization-based approach to solve environment constrained economic dispatch problem on microgrid system". Journal of Cleaner Production.Comparativo de Performance (Custo Diário - 24h)MétodoAbordagemCusto Total (USD)DiferençaArtigo (Dey et al.)Metaheurística (GWO)$ 176.165,00Ref.Smart DispatchAnalítico (Cálculo)**$ 170.460,88**-3,23%✅ Conclusão: O método analítico exato provou ser 3,23% mais econômico que a abordagem heurística do estado da arte, garantindo o Mínimo Global matemático.📂 Estrutura de ArquivosPlaintextsmart-dispatch/
+```
+O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo frontend/index.html no seu navegador.(Dica: Se usar VS Code, utilize a extensão "Live Server" para evitar problemas de CORS, embora a API já esteja configurada para aceitá-los).
+
+## 📊 Validação e Resultados
+O sistema foi validado utilizando dados reais do artigo de referência:Dey, B., et al. (2021). "A hybrid optimization-based approach to solve environment constrained economic dispatch problem on microgrid system". Journal of Cleaner Production.Comparativo de Performance (Custo Diário - 24h)MétodoAbordagemCusto Total (USD)DiferençaArtigo (Dey et al.)Metaheurística (GWO)$ 176.165,00Ref.Smart DispatchAnalítico (Cálculo)**$ 170.460,88**-3,23%✅ Conclusão: O método analítico exato provou ser 3,23% mais econômico que a abordagem heurística do estado da arte, garantindo o Mínimo Global matemático.
+
+## 📂 Estrutura de ArquivosPlaintextsmart-dispatch/
 │
 ├── backend/
 │   ├── app.py              
@@ -104,7 +115,7 @@ O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo 
 │
 ├── validacao_artigo.ipynb  
 └── README.md    
-```           
+
 ## 👥 Autores
 
 Projeto desenvolvido para a disciplina de Resolução Diferencial de Problemas.
@@ -113,5 +124,5 @@ Augusto Rodrigues
 Cauê Barroso
 César Ribeiro
 
-📄 Licença
+## 📄 Licença
 Este projeto é distribuido pelo Cesupa (Centro Universário do Estado do Pará).
