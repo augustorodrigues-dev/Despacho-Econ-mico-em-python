@@ -98,26 +98,25 @@ O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo 
 ## 📊 Validação e Resultados
 O sistema foi validado utilizando dados reais do artigo de referência:Dey, B., et al. (2021). "A hybrid optimization-based approach to solve environment constrained economic dispatch problem on microgrid system". Journal of Cleaner Production.Comparativo de Performance (Custo Diário - 24h)MétodoAbordagemCusto Total (USD)DiferençaArtigo (Dey et al.)Metaheurística (GWO)$ 176.165,00Ref.Smart DispatchAnalítico (Cálculo)**$ 170.460,88**-3,23%✅ Conclusão: O método analítico exato provou ser 3,23% mais econômico que a abordagem heurística do estado da arte, garantindo o Mínimo Global matemático.
 
-## 📂 Estrutura de Arquivos/
-│
-├── backend/
-│   ├── app.py                 # Servidor Flask e rotas API/HTML
-│   ├── optimization.py        # Lógica Matemática (Lagrange/SymPy)
-│   ├── database.py            # Conexão e Lógica SQLite
-│   ├── requirements.txt       # Dependências (Flask, SymPy, Gunicorn)
+## Estrutura de Arquivos/
+├── backend/                                   # O Serviço Único de Deploy (Root Directory)
+│   ├── app.py # Servidor Flask e rotas API/HTML
+│   ├── optimization.py # Lógica Matemática (SymPy)
+│   ├── database.py # Conexão e Lógica SQLite
+│   ├── requirements.txt # Dependências (Flask, SymPy, Gunicorn)
 │   │
-│   ├── templates/             # Arquivos HTML servidos pelo Flask
-│   │   └── index.html         # O dashboard principal
+│   ├── templates/
+│   │   └── index.html # O Dashboard Principal (HTML)
 │   │
-│   └── static/                # Arquivos estáticos (CSS, JS, Imagens)
-│       ├── script.js          # Lógica do Frontend e Chart.js
-│       └── style.css          # Estilização do Dashboard
+│   └── static/
+│       ├── script.js # Lógica do Frontend e Chart.js
+│       └── style.css # Estilização do Dashboard
 │
-├── data/
-│   └── historico.db           # Banco de Dados (Persistência)
+├── data/                                      # Persistência de Dados
+│   └── historico.db # Banco de Dados
 │
-├── validacao_artigo.ipynb     # Prova Matemática e Gráficos de Validação
-└── README.md                  # Documentação e Instruções (Atualizado para esta estrutura)
+├── validacao_artigo.ipynb # Prova Matemática e Gráficos de Validação
+└── README.md # Documentação e Instruções
 
 ## 👥 Autores
 
