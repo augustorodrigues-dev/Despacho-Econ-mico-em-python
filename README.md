@@ -105,11 +105,11 @@ O sistema foi validado utilizando dados reais do artigo de referência:Dey, B., 
 │   ├── optimization.py     
 │   ├── database.py         
 │   └── requirements.txt  
-|   └── templates/
-|       |└── index.html
-|    └── static/
+│   └── templates/
+│       |└── index.html
+│   └── static/
 │       |└── style.css
-        |└── script.js
+│       |└── script.js
 ├── frontend/
 │   ├── index.html          
 │   ├── script.js           
