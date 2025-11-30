@@ -19,6 +19,10 @@ Diferente de abordagens tradicionais que usam métodos aproximados (metaheuríst
 
 ---
 
+## Deploy
+
+[CLIQUE AQUI PARA ACESSAR O SISTEMA](https://despacho-econ-mico-em-python.onrender.com/)
+
 ## 📐 Modelagem Matemática
 
 O núcleo do sistema é baseado na minimização de funções quadráticas convexas.
