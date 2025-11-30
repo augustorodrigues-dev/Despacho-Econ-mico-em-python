@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otimização Energética Microgrid</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-primary">⚡ Smart Dispatch</h1>
+        <p class="lead text-muted">Sistema de Otimização Econômica para Microgrids (Método Lagrange)</p>
+    </div>
+    
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card main-card p-4 shadow-sm">
+                
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-sm btn-outline-success d-flex align-items-center gap-2" onclick="baixarCSV()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
+                          <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                          <path d="M3 12a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-2.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                        Baixar Histórico (CSV)
+                    </button>
+                </div>
+
+                <label class="form-label fw-bold">Demanda de Energia (MW)</label>
+                <div class="input-group mb-3">
+                    <input type="number" id="inputDemanda" class="form-control form-control-lg" placeholder="Ex: 300">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="calcular(event)">Otimizar Despacho</button>
+                </div>
+                
+                <div class="d-flex gap-2 justify-content-center align-items-center flex-wrap">
+                    <small class="text-muted">Cenários de Teste:</small>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="setDemanda(140)">140 MW (Baixa)</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="setDemanda(300)">300 MW (Média)</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="setDemanda(450)">450 MW (Alta)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultados" class="d-none animate-fade-in">
+        
+        <div class="alert alert-success d-flex align-items-center shadow-sm mb-4" role="alert">
+            <div class="fs-1 me-3">💰</div>
+            <div class="flex-grow-1">
+                <h4 class="alert-heading mb-1">Economia Projetada</h4>
+                <p class="mb-0">
+                    Comparado a um rateio simples, esta otimização matemática gera uma economia estimada de 
+                    <strong id="valEconomia"></strong> por hora.
+                </p>
+            </div>
+            <div class="text-end ps-3 d-none d-md-block">
+                <span class="badge bg-success fs-6">Mínimo Global Garantido</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0">Despacho Sugerido</h4>
+                </div>
+                
+                <div class="row" id="cardsGeradores"></div>
+                
+                <div class="lambda-box mt-3 shadow-sm rounded bg-white p-3 border-start border-5 border-success">
+                    <h5 class="text-success">📐 Justificativa (Lagrange)</h5>
+                    <p class="mb-0 small text-muted">
+                        O sistema convergiu para um Custo Incremental (Lambda) de 
+                        <strong id="valLambda" class="text-dark"></strong>. 
+                        Isso significa que o custo marginal ($\partial L/\partial P$) foi equalizado para todos os geradores ativos, garantindo a eficiência máxima.
+                    </p>
+                </div>
+                
+                <div class="card mt-3 bg-dark text-white text-center p-3 shadow">
+                    <small class="text-uppercase text-white-50">Custo Total Operacional</small>
+                    <h2 class="m-0">$<span id="custoTotal">0.00</span> /h</h2>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4 fw-bold text-secondary">Curvas de Custo & Ponto Ótimo</h5>
+                        
+                        <div style="position: relative; height: 400px; width: 100%;">
+                            <canvas id="costChart"></canvas>
+                        </div>
+                        
+                        <div class="alert alert-light mt-3 text-center border">
+                            <small class="text-muted">
+                                *As curvas ilustram a função quadrática de custo ($ax^2 + bx + c$) de cada unidade. 
+                                Os pontos representam a solução ótima encontrada pelo solver.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
