@@ -1,4 +1,6 @@
 let chartInstance = null;
+
+
 const GEN_PARAMS = {
     'G1': { 
         nome: 'Turbina a Vapor (Base)', 
@@ -28,7 +30,7 @@ function baixarCSV() {
 
 async function calcular(event) {
     if (event) event.preventDefault();
-
+   
     const btn = document.querySelector('button[onclick*="calcular"]');
     const originalText = btn.innerText;
     btn.innerText = "Calculando...";
@@ -64,6 +66,7 @@ async function calcular(event) {
 function exibirResultados(dados) {
     document.getElementById('valLambda').innerText = "$ " + dados.lambda.toFixed(4);
     document.getElementById('custoTotal').innerText = dados.custo_total.toFixed(2);
+
     const economia = dados.custo_total * 0.052; 
     document.getElementById('valEconomia').innerText = `$ ${economia.toFixed(2)}`;
 
@@ -72,11 +75,12 @@ function exibirResultados(dados) {
 
     for (const [key, val] of Object.entries(dados.geradores)) {
         const info = GEN_PARAMS[key];
+       
         const percentual = ((val.potencia - info.min) / (info.max - info.min)) * 100;
         
         let corBarra = 'bg-success';
         let statusBadge = '<span class="badge bg-success bg-opacity-10 text-success border border-success">Ideal</span>';
-        
+       
         if (val.potencia >= info.max - 0.1) { 
             corBarra = 'bg-danger'; 
             statusBadge = '<span class="badge bg-danger">Limite Máx</span>'; 
@@ -119,13 +123,14 @@ function renderizarGrafico(resultados) {
     if (chartInstance) chartInstance.destroy();
 
     const datasets = [];
-  
+    
     const colors = { 'G1': '#0d6efd', 'G2': '#198754', 'G3': '#ffc107' };
 
     for (const [genId, params] of Object.entries(GEN_PARAMS)) {
         const dataPoints = [];
         const step = (params.max - params.min) / 20;
-      
+        
+       
         for (let p = params.min; p <= params.max; p += step) {
             dataPoints.push({ x: p, y: params.a * p * p + params.b * p + params.c });
         }
@@ -140,6 +145,7 @@ function renderizarGrafico(resultados) {
             tension: 0.4
         });
 
+        
         if (resultados[genId]) {
             datasets.push({
                 label: `Operação ${genId}`,
@@ -170,7 +176,7 @@ function renderizarGrafico(resultados) {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            
+                           
                             return `${context.dataset.label}: ${context.raw.x.toFixed(1)} MW / $${context.raw.y.toFixed(0)}`;
                         }
                     }
