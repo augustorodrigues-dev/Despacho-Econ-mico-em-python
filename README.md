@@ -101,11 +101,13 @@ O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo 
 ├── validacao_artigo.ipynb  
 └── README.md    
 ```           
-👥 Autores
+## 👥 Autores
 
 Projeto desenvolvido para a disciplina de Resolução Diferencial de Problemas.
-Augusto Rodrigue
+
+Augusto Rodrigues
 Cauê Barroso
 César Ribeiro
+
 📄 Licença
 Este projeto é distribuido pelo Cesupa (Centro Universário do Estado do Pará).

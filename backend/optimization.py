@@ -1,5 +1,6 @@
 import sympy as sp
 
+# Dados Reais do Artigo
 GERADORES = {
     'G1': {'a': 0.0024, 'b': 21.0,  'c': 1530, 'min': 37.0, 'max': 150.0},
     'G2': {'a': 0.0029, 'b': 20.16, 'c': 992,  'min': 40.0, 'max': 160.0},
@@ -7,42 +8,35 @@ GERADORES = {
 }
 
 def calcular_despacho(demanda_total):
-    """
-    Realiza o cálculo de despacho econômico com tratamento robusto de limites.
-    """
     try:
-        
+        # 1. Viabilidade Física
         soma_minimos = sum(g['min'] for g in GERADORES.values())
         soma_maximos = sum(g['max'] for g in GERADORES.values())
 
         if demanda_total < soma_minimos:
-            return {'erro': f"Demanda impossível! O mínimo físico do sistema é {soma_minimos} MW."}
-        
+            return {'erro': f"Demanda muito baixa! Mínimo físico: {soma_minimos} MW."}
         if demanda_total > soma_maximos:
-            return {'erro': f"Demanda impossível! O máximo físico do sistema é {soma_maximos} MW."}
+            return {'erro': f"Demanda muito alta! Máximo físico: {soma_maximos} MW."}
 
+        # 2. Loop Iterativo
         geradores_ativos = list(GERADORES.keys())
-        potencias_finais = {g: 0.0 for g in GERADORES} # Começa zerado
+        potencias_finais = {g: 0.0 for g in GERADORES}
         lambda_val = 0.0
- 
-        for _ in range(10):
-    
+        
+        for _ in range(10): # Max 10 iterações
+            # Inicialização segura de variáveis
             maior_violacao = 0.0
             gerador_violador = None
             tipo_violacao = None
-            violacao_detectada = False
             solucao_temp = {}
-           
-            if not geradores_ativos:
-                break
+
+            if not geradores_ativos: break
 
             simbolos_P = {g: sp.symbols(f'P_{g}', real=True) for g in geradores_ativos}
             lam = sp.symbols('lambda', real=True)
-          
+            
             custo_lagrange = 0
             soma_potencias_ativas = 0
-            
-   
             carga_fixa = sum(potencias_finais[g] for g in GERADORES if g not in geradores_ativos)
             demanda_para_ativos = demanda_total - carga_fixa
             
@@ -54,89 +48,56 @@ def calcular_despacho(demanda_total):
                 
             L = custo_lagrange - lam * (soma_potencias_ativas - demanda_para_ativos)
             
-          
-            equacoes = []
-            for g in geradores_ativos:
-                equacoes.append(sp.diff(L, simbolos_P[g])) 
-            equacoes.append(sp.diff(L, lam)) 
+            equacoes = [sp.diff(L, simbolos_P[g]) for g in geradores_ativos]
+            equacoes.append(sp.diff(L, lam))
             
+            resultado = sp.solve(equacoes, list(simbolos_P.values()) + [lam])
             
-            variaveis = list(simbolos_P.values()) + [lam]
-            resultado = sp.solve(equacoes, variaveis)
-            
-            if not resultado:
-                raise ValueError("Erro matemático: O sistema linear não convergiu.")
+            if not resultado: raise ValueError("Sistema não convergiu.")
 
-            
+            # Extração de valores do SymPy
             if isinstance(resultado, dict):
-                for g in geradores_ativos:
-                    solucao_temp[g] = float(resultado[simbolos_P[g]])
+                for g in geradores_ativos: solucao_temp[g] = float(resultado[simbolos_P[g]])
                 lambda_val = float(resultado[lam])
             elif isinstance(resultado, list):
-                
-                if len(resultado) > 0 and isinstance(resultado[0], tuple):
-                    res_tuple = resultado[0]
-                    for idx, g in enumerate(geradores_ativos):
-                        solucao_temp[g] = float(res_tuple[idx])
-                    lambda_val = float(res_tuple[-1])
-                else:
-                    
-                    for idx, g in enumerate(geradores_ativos):
-                        solucao_temp[g] = float(resultado[idx])
+                res_tuple = resultado[0] if isinstance(resultado[0], tuple) else resultado
+                for idx, g in enumerate(geradores_ativos): solucao_temp[g] = float(res_tuple[idx])
+                lambda_val = float(res_tuple[-1])
             
-            
-            
+            # Análise de Fronteira
+            violacao_detectada = False
             for g, potencia in solucao_temp.items():
-                lim_min = GERADORES[g]['min']
-                lim_max = GERADORES[g]['max']
-                
-                if potencia > lim_max:
-                    diff = potencia - lim_max
+                if potencia > GERADORES[g]['max']:
+                    diff = potencia - GERADORES[g]['max']
                     if diff > maior_violacao:
                         maior_violacao = diff
                         gerador_violador = g
                         tipo_violacao = 'max'
-                
-                elif potencia < lim_min:
-                    diff = lim_min - potencia
+                elif potencia < GERADORES[g]['min']:
+                    diff = GERADORES[g]['min'] - potencia
                     if diff > maior_violacao:
                         maior_violacao = diff
                         gerador_violador = g
                         tipo_violacao = 'min'
 
             if gerador_violador:
-                violacao_detectada = True
-                
-                if tipo_violacao == 'max':
-                    potencias_finais[gerador_violador] = GERADORES[gerador_violador]['max']
-                else:
-                    potencias_finais[gerador_violador] = GERADORES[gerador_violador]['min']
-                
-                
+                val = GERADORES[gerador_violador]['max'] if tipo_violacao == 'max' else GERADORES[gerador_violador]['min']
+                potencias_finais[gerador_violador] = val
                 geradores_ativos.remove(gerador_violador)
                 continue
-            
             
             potencias_finais.update(solucao_temp)
             break
         
-        
-        resposta = {
-            'geradores': {},
-            'lambda': lambda_val,
-            'custo_total': 0,
-            'status': 'Sucesso'
-        }
-        
+        # Resposta Final
+        resposta = {'geradores': {}, 'lambda': lambda_val, 'custo_total': 0, 'status': 'Sucesso'}
         for g, p in potencias_finais.items():
-            par = GERADORES[g]
-            custo = par['a']*p**2 + par['b']*p + par['c']
+            custo = GERADORES[g]['a']*p**2 + GERADORES[g]['b']*p + GERADORES[g]['c']
             resposta['custo_total'] += custo
             resposta['geradores'][g] = {'potencia': round(p, 2), 'custo': round(custo, 2)}
             
         return resposta
 
     except Exception as e:
-       
-        print(f"ERRO BACKEND: {str(e)}")
-        return {'erro': f"Erro interno no cálculo: {str(e)}"}
+        print(f"ERRO: {e}")
+        return {'erro': str(e)}

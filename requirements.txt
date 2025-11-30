@@ -1,6 +1,4 @@
 flask
-flask_cors
+flask-cors
 sympy
-matplotlib
-seaborn
-pandas
+gunicorn
