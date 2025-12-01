@@ -114,12 +114,10 @@ O sistema foi validado utilizando um cenário de caso real de 24 horas extraído
 
 A validação compara o custo total de operação obtido pelo nosso método exato (Lagrange) com o resultado do método aproximado (Metaheurística GWO) utilizado pelos autores no artigo.
 
-``` bash
 | Método | Abordagem | Custo Total (USD) | Desempenho |
 | :--- | :--- | :--- | :--- |
 | **Referência** | Metaheurística (GWO) | $ 176.165,00$ | Baseline |
 | **Smart Dispatch** | Analítico (Cálculo) | **$ 170.460,88** | **-3,23%** (Economia) |
-```
 
 ### ✅ Conclusão
 
