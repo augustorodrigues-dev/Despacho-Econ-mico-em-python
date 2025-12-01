@@ -7,19 +7,15 @@ from flask_cors import CORS
 from optimization import calcular_despacho
 from database import init_db, salvar_calculo, listar_historico
 
-# Define explicitamente as pastas de template e estáticos para evitar erros
 app = Flask(__name__, template_folder='templates', static_folder='static')
 CORS(app) 
 
-# Inicializa o banco ao arrancar
 init_db()
 
-# --- ROTA PRINCIPAL (FRONTEND) ---
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# --- ROTAS DA API (BACKEND) ---
 @app.route('/api/calcular', methods=['POST'])
 def calcular():
     data = request.json
@@ -29,14 +25,12 @@ def calcular():
             return jsonify({'sucesso': False, 'mensagem': 'Demanda não informada'}), 400
             
         demanda = float(demanda_str)
-        
-        # 1. Otimização Matemática
+      
         resultado = calcular_despacho(demanda)
         
         if 'erro' in resultado:
             return jsonify({'sucesso': False, 'mensagem': resultado['erro']}), 400
 
-        # 2. Persistência
         salvar_calculo(demanda, resultado['custo_total'], resultado['lambda'])
 
         return jsonify({'sucesso': True, 'dados': resultado})

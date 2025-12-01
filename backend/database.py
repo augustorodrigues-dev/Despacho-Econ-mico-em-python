@@ -2,9 +2,9 @@ import sqlite3
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_FOLDER = os.path.join(BASE_DIR, '..', 'data') # Salva na pasta data/ fora do backend
+DB_FOLDER = os.path.join(BASE_DIR, '..', 'data') 
 if not os.path.exists(DB_FOLDER):
-    # Fallback para salvar localmente se a pasta data não existir (comum em deploy)
+    
     DB_FOLDER = BASE_DIR
 
 DB_PATH = os.path.join(DB_FOLDER, 'historico.db')

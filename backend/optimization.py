@@ -1,6 +1,4 @@
 import sympy as sp
-
-# Dados Reais do Artigo
 GERADORES = {
     'G1': {'a': 0.0024, 'b': 21.0,  'c': 1530, 'min': 37.0, 'max': 150.0},
     'G2': {'a': 0.0029, 'b': 20.16, 'c': 992,  'min': 40.0, 'max': 160.0},
@@ -9,7 +7,7 @@ GERADORES = {
 
 def calcular_despacho(demanda_total):
     try:
-        # 1. Viabilidade Física
+        
         soma_minimos = sum(g['min'] for g in GERADORES.values())
         soma_maximos = sum(g['max'] for g in GERADORES.values())
 
@@ -18,13 +16,11 @@ def calcular_despacho(demanda_total):
         if demanda_total > soma_maximos:
             return {'erro': f"Demanda muito alta! Máximo físico: {soma_maximos} MW."}
 
-        # 2. Loop Iterativo
         geradores_ativos = list(GERADORES.keys())
         potencias_finais = {g: 0.0 for g in GERADORES}
         lambda_val = 0.0
         
-        for _ in range(10): # Max 10 iterações
-            # Inicialização segura de variáveis
+        for _ in range(10): 
             maior_violacao = 0.0
             gerador_violador = None
             tipo_violacao = None
@@ -55,7 +51,6 @@ def calcular_despacho(demanda_total):
             
             if not resultado: raise ValueError("Sistema não convergiu.")
 
-            # Extração de valores do SymPy
             if isinstance(resultado, dict):
                 for g in geradores_ativos: solucao_temp[g] = float(resultado[simbolos_P[g]])
                 lambda_val = float(resultado[lam])
@@ -64,7 +59,6 @@ def calcular_despacho(demanda_total):
                 for idx, g in enumerate(geradores_ativos): solucao_temp[g] = float(res_tuple[idx])
                 lambda_val = float(res_tuple[-1])
             
-            # Análise de Fronteira
             violacao_detectada = False
             for g, potencia in solucao_temp.items():
                 if potencia > GERADORES[g]['max']:
@@ -88,8 +82,7 @@ def calcular_despacho(demanda_total):
             
             potencias_finais.update(solucao_temp)
             break
-        
-        # Resposta Final
+       
         resposta = {'geradores': {}, 'lambda': lambda_val, 'custo_total': 0, 'status': 'Sucesso'}
         for g, p in potencias_finais.items():
             custo = GERADORES[g]['a']*p**2 + GERADORES[g]['b']*p + GERADORES[g]['c']
