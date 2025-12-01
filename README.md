@@ -19,6 +19,16 @@ Diferente de abordagens tradicionais que usam métodos aproximados (metaheuríst
 
 ---
 
+## 👥 Autores
+
+Este projeto foi desenvolvido para a disciplina de Resolução Diferencial de Problemas.
+
+Augusto Rodrigues
+Cauê Barroso
+César Ribeiro
+
+---
+
 ## Deploy
 
 [CLIQUE AQUI PARA ACESSAR O SISTEMA](https://despacho-econ-mico-em-python.onrender.com/)
@@ -123,14 +133,6 @@ O sistema foi validado utilizando dados reais do artigo de referência:Dey, B., 
 ├── validacao_artigo.ipynb
 └── README.md
 ```   
-
-## 👥 Autores
-
-Projeto desenvolvido para a disciplina de Resolução Diferencial de Problemas.
-
-Augusto Rodrigues
-Cauê Barroso
-César Ribeiro
 
 ## 📄 Licença
 Este projeto é distribuido pelo Cesupa (Centro Universário do Estado do Pará).
