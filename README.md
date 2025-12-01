@@ -87,7 +87,7 @@ Siga os passos abaixo para executar o sistema na sua máquina local.
 git clone [https://github.com/augustorodrigues-dev/Despacho-Econ-mico-em-python](https://github.com/augustorodrigues-dev/Despacho-Econ-mico-em-python)
 cd despacho-economico-em-python
 ```
-2. Criar Ambiente Virtual (Recomendado)Bash# Windows
+2. Criar Ambiente Virtual (Recomendado)
 ```bash
 python -m venv venv
 venv\Scripts\activate
@@ -99,14 +99,31 @@ source venv/bin/activate
 ```Bash
 pip install -r backend/requirements.txt
 ```
-4. Executar o BackendO banco de dados historico.db será criado automaticamente na primeira execução.Bashcd backend
+4. Executar o Backend
+O banco de dados historico.db será criado automaticamente na primeira execução.
 ```Bash
-python app.py
+python backend/app.py
 ```
-O servidor iniciará em http://127.0.0.1:50005. Acessar o SistemaAbra o arquivo frontend/index.html no seu navegador.(Dica: Se usar VS Code, utilize a extensão "Live Server" para evitar problemas de CORS, embora a API já esteja configurada para aceitá-los).
+O servidor iniciará em http://127.0.0.1:50005. 
+
+## Acessar o Sistema
+Abra o arquivo templates/index.html no seu navegador. (Dica: Se usar VS Code, utilize a extensão "Live Server" para evitar problemas de CORS, embora a API já esteja configurada para aceitá-los).
 
 ## 📊 Validação e Resultados
-O sistema foi validado utilizando dados reais do artigo de referência:Dey, B., et al. (2021). "A hybrid optimization-based approach to solve environment constrained economic dispatch problem on microgrid system". Journal of Cleaner Production.Comparativo de Performance (Custo Diário - 24h)MétodoAbordagemCusto Total (USD)DiferençaArtigo (Dey et al.)Metaheurística (GWO)$ 176.165,00Ref.Smart DispatchAnalítico (Cálculo)**$ 170.460,88**-3,23%✅ Conclusão: O método analítico exato provou ser 3,23% mais econômico que a abordagem heurística do estado da arte, garantindo o Mínimo Global matemático.
+O sistema foi validado utilizando um cenário de caso real de 24 horas extraído do artigo científico de referência: Dey, B., et al. (2021), publicado no Journal of Cleaner Production.
+
+A validação compara o custo total de operação obtido pelo nosso método exato (Lagrange) com o resultado do método aproximado (Metaheurística GWO) utilizado pelos autores no artigo.
+
+``` bash
+| Método | Abordagem | Custo Total (USD) | Desempenho |
+| :--- | :--- | :--- | :--- |
+| **Referência** | Metaheurística (GWO) | $ 176.165,00$ | Baseline |
+| **Smart Dispatch** | Analítico (Cálculo) | **$ 170.460,88** | **-3,23%** (Economia) |
+```
+
+### ✅ Conclusão
+
+O método analítico exato provou ser **3,23% mais econômico** que a abordagem heurística do estado da arte (GWO). Este resultado comprova o sucesso do projeto, pois o **Cálculo Diferencial** garantiu o encontro do **Mínimo Global Matemático**, sem sofrer as imprecisões de ótimos locais que afetam os algoritmos baseados em busca aleatória.
 
 ## 📂 Estrutura de Arquivos/
 ```bash
